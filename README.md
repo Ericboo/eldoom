@@ -1,6 +1,6 @@
 # eldoom
 
-Eldoom is a fictitious name to the software engineering project.
+Eldoom is a fictitious name to the software engineering project described below.
 
 # project scope(Portuguese):
 
