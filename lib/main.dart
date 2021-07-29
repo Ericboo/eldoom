@@ -1,3 +1,4 @@
+import 'package:eldoom/pages/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -5,24 +6,23 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
+  final Color? primaryColor = Colors.lightBlue[500];
   @override
 
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Eldoom',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
+        scaffoldBackgroundColor: Colors.grey[900],
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(
+            color: primaryColor,
+          ),
+        ),
       ),
       home: Login(),
     );
   }
 }
-
-class Login extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-

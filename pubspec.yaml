@@ -1,5 +1,5 @@
 name: eldoom
-description: minha xota
+description: Eldoom é uma plataforma fictícia feita para o gerenciamento de notas de uma turma.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -60,12 +60,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  fonts:
+   - family: Raleway
+     fonts:
+       - asset: packages/awesome_package/fonts/Raleway-Regular.ttf
+       - asset: packages/awesome_package/fonts/Raleway-Italic.ttf
+         style: italic
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
