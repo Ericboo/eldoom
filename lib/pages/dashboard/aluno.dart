@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-//Dashboard é a tela que mostrará informações úteis tanto aos professores quanto
-//aos alunos. A tela deverá saber se o login é referente a um professor ou aluno.
-//ao aluno a tela deve mostrar as duas notas, a média e [talvez] os professores.
-//ao professor a tela deve mostrar cada aluno em uma lista e permitir ao professor
-//atribuir notas. good luck
-
-class Dashboard extends StatelessWidget {
-  final bool aluno = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return aluno ? DashboardAluno() : DashboardProfessor();
-  }
-}
-
 class DashboardAluno extends StatelessWidget {
   final double nota1 = 8;
   final double nota2 = 10;
@@ -86,17 +71,6 @@ class DashboardAluno extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class DashboardProfessor extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
       ),
     );
   }
