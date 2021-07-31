@@ -12,9 +12,10 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   bool isChecked = false;
-  
+  final TextEditingController _userControl = TextEditingController();
+  final TextEditingController _senhaControl = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,15 +26,16 @@ class _LoginState extends State<Login> {
       ),
       body: Column(
         children: [
-          LoginInput('Email', Icons.person, false),
-          LoginInput('Senha', Icons.lock, true),
-          Padding(
+          LoginInput('Email', Icons.person, false, _userControl),
+          LoginInput('Senha', Icons.lock, true, _senhaControl),
+          Padding(//Lembre-se de mim checkbox//TODO: DESCOBRIR COMO FAZER ISSO FUNCIONAR.
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
                 Checkbox(
                   checkColor: Colors.white,
-                  fillColor: MaterialStateProperty.resolveWith((state) => Colors.blue),
+                  fillColor:
+                      MaterialStateProperty.resolveWith((state) => Colors.blue),
                   value: isChecked,
                   onChanged: (bool? value) {
                     setState(() {
@@ -41,15 +43,30 @@ class _LoginState extends State<Login> {
                     });
                   },
                 ),
-                Text('Lembre-se de mim', style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16),),
+                Text(
+                  'Lembre-se de mim',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor, fontSize: 16),
+                ),
               ],
             ),
-          ),//Checkbox
-          Padding(
+          ),
+          Padding(//Botão de loguin
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard()));
+                if (_userControl.text.isEmpty || _senhaControl.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                    'Preencha os campos.',
+                    style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                  )));
+                  return;
+                }
+                if (true) {//TODO: VALIDAR LOGIN NO BANCO DE DADOS
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Dashboard()));
+                }
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -62,10 +79,11 @@ class _LoginState extends State<Login> {
                     child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white),
-                )),
+                  ),
+                ),
               ),
             ),
-          ),//Button
+          ),
           Text(
             'Eldoom é uma plataforma fictícia gratuita feita para o gerenciamento '
             'coordenado de uma turma.',
@@ -81,13 +99,19 @@ class _LoginState extends State<Login> {
   }
 }
 
-class LoginInput extends StatelessWidget {
+class LoginInput extends StatefulWidget {
   final String label;
   final IconData icon;
   final bool isObscure;
+  final TextEditingController _controller;
 
-  LoginInput(this.label, this.icon, this.isObscure);
+  LoginInput(this.label, this.icon, this.isObscure, this._controller);
 
+  @override
+  _LoginInputState createState() => _LoginInputState();
+}
+
+class _LoginInputState extends State<LoginInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -97,18 +121,20 @@ class LoginInput extends StatelessWidget {
           border: Border.all(color: Theme.of(context).primaryColor, width: 2),
           borderRadius: BorderRadius.circular(12),
         ),
-        child: TextFormField(
-          keyboardType:
-              isObscure ? TextInputType.text : TextInputType.emailAddress,
-          obscureText: isObscure,
+        child: TextField(
+          controller: widget._controller,
+          keyboardType: widget.isObscure
+              ? TextInputType.text
+              : TextInputType.emailAddress,
+          obscureText: widget.isObscure,
           style: TextStyle(color: Colors.white, fontSize: 20),
           decoration: InputDecoration(
             border: InputBorder.none,
             icon: Icon(
-              icon,
+              widget.icon,
               color: Theme.of(context).primaryColor,
             ),
-            hintText: label,
+            hintText: widget.label,
           ),
         ),
       ),
