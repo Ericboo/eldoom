@@ -31,6 +31,9 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
         onPressed: () async {
           final Future future = Navigator.push(context, MaterialPageRoute(builder: (context) => AlunoForm()));
           await future.then((novoAluno) {
+            if (novoAluno == null) {
+              return;
+            }
             alunos.add(novoAluno);
           });
           setState(() {
