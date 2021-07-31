@@ -1,4 +1,3 @@
-import 'package:eldoom/models/aluno.dart';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +20,30 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
         itemBuilder: (context, index) {
           return Column(
             children: [
-              AlunoCard(alunos[index]),
+              Card(
+                color: Theme.of(context).primaryColor,
+                margin: EdgeInsets.all(8),
+                child: Container(
+                  height: 40,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        child: Icon(Icons.close, color: Colors.red[400],),
+                        onTap: () {
+                          setState(() {
+                            alunos.removeAt(index);
+                          });
+                        }
+                      ),
+                      Expanded(child: Text(alunos[index].nome)),
+                      NotaForm(),
+                      SizedBox(width: 16,),
+                      NotaForm(),
+                      SizedBox(width: 12,)
+                    ],
+                  ),
+                ),
+              ),
             ],
           );
         },
@@ -29,46 +51,20 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final Future future = Navigator.push(context, MaterialPageRoute(builder: (context) => AlunoForm()));
+          final Future future = Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AlunoForm()));
           await future.then((novoAluno) {
             if (novoAluno == null) {
               return;
             }
             alunos.add(novoAluno);
           });
-          setState(() {
-          });
+          setState(() {});
         },
         child: Icon(Icons.add),
-        backgroundColor: Theme.of(context).primaryColor,
-      ),
-    );
-  }
-}
-
-class AlunoCard extends StatelessWidget {
-
-  final Aluno aluno;
-
-  AlunoCard(this.aluno);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      color: Theme.of(context).primaryColor,
-      margin: EdgeInsets.all(8),
-      child: Container(
-        height: 40,
-        child: Row(
-          children: [
-            Icon(Icons.close, color: Colors.red[400],),
-            Expanded(child: Text(aluno.nome)),
-            NotaForm(),
-            SizedBox(width: 16,),
-            NotaForm(),
-            SizedBox(width: 12,)
-          ],
-        ),
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
       ),
     );
   }
