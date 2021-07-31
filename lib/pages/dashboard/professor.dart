@@ -1,3 +1,4 @@
+import 'package:eldoom/models/aluno.dart';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
 import 'package:flutter/material.dart';
 
@@ -8,7 +9,7 @@ class DashboardProfessor extends StatefulWidget {
 
 class _DashboardProfessorState extends State<DashboardProfessor> {
 
-  final List alunos = [];
+  final List<dynamic> alunos = [];
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +17,23 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
       appBar: AppBar(
         title: Text('Sua turma'),
       ),
-      body: ListView(
-        children: [
-          AlunoCard('FULANE DA SILVE SOUZE'),
-        ],
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              AlunoCard(alunos[index]),
+            ],
+          );
+        },
+        itemCount: alunos.length,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => AlunoForm()));
+        onPressed: () async {
+          final Future future = Navigator.push(context, MaterialPageRoute(builder: (context) => AlunoForm()));
+          await future.then((novoAluno) {
+            alunos.add(novoAluno);
+          });
           setState(() {
-
           });
         },
         child: Icon(Icons.add),
@@ -37,9 +45,9 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
 
 class AlunoCard extends StatelessWidget {
 
-  final String nome;
+  final Aluno aluno;
 
-  AlunoCard(this.nome);
+  AlunoCard(this.aluno);
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +58,33 @@ class AlunoCard extends StatelessWidget {
         height: 40,
         child: Row(
           children: [
-            Icon(Icons.add),
-            Text(nome)
+            Icon(Icons.close, color: Colors.red[400],),
+            Expanded(child: Text(aluno.nome)),
+            NotaForm(),
+            SizedBox(width: 16,),
+            NotaForm(),
+            SizedBox(width: 12,)
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class NotaForm extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 30,
+      width: 40,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.white,
+      ),
+      child: Center(
+        child: TextField(
+          keyboardType: TextInputType.number,
         ),
       ),
     );

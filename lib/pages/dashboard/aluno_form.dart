@@ -1,8 +1,12 @@
+import 'package:eldoom/models/aluno.dart';
 import 'package:flutter/material.dart';
 
-//TODO: IMPLEMENTAR CONTROLLERS
-
 class AlunoForm extends StatelessWidget {
+
+  final TextEditingController _nomeControl = TextEditingController();
+  final TextEditingController _emailControl = TextEditingController();
+  final TextEditingController _senhaControl = TextEditingController();
+  final TextEditingController _confirmSenhaControl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -10,15 +14,22 @@ class AlunoForm extends StatelessWidget {
       appBar: AppBar(title: Text('Matricular aluno'),),
       body: Column(
         children: [
-          InfoInput('Nome Completo', Icons.person, false),
-          InfoInput('Email', Icons.alternate_email, false),
-          InfoInput('Senha', Icons.lock, true),
-          InfoInput('Confirme a senha', Icons.lock, true),
+          InfoInput(_nomeControl, 'Nome Completo', Icons.person, false),
+          InfoInput(_emailControl,'Email', Icons.alternate_email, false),
+          InfoInput(_senhaControl, 'Senha', Icons.lock, true),
+          InfoInput(_confirmSenhaControl, 'Confirme a senha', Icons.lock, true),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
               onTap: () {
-                Navigator.pop(context);
+                if (_nomeControl.text.isEmpty || _emailControl.text.isEmpty) {
+                  return;
+                }
+                if (_senhaControl.text != _confirmSenhaControl.text) {
+                  return;
+                }
+                final Aluno aluno = Aluno(_nomeControl.text, _emailControl.text, _senhaControl.text);
+                Navigator.pop(context, aluno);
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -42,11 +53,13 @@ class AlunoForm extends StatelessWidget {
 }
 
 class InfoInput extends StatelessWidget {
+
+  final TextEditingController _controller;
   final String label;
   final IconData icon;
   final bool isObscure;
 
-  InfoInput(this.label, this.icon, this.isObscure);
+  InfoInput(this._controller, this.label, this.icon, this.isObscure);
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +71,7 @@ class InfoInput extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: TextFormField(
+          controller: _controller,
           keyboardType:
           isObscure ? TextInputType.text : TextInputType.emailAddress,
           obscureText: isObscure,
