@@ -27,7 +27,10 @@ class DashboardAluno extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(16),
-                    child: Text("Neste perido, suas notas foram:", style: TextStyle(fontSize: 16),),
+                    child: Text(
+                      "Neste período, suas notas foram:",
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -35,17 +38,26 @@ class DashboardAluno extends StatelessWidget {
                       Padding(
                         //TODO: verificar se existem as notas antes de mostrá-las.
                         padding: EdgeInsets.all(16),
-                        child: Text(nota1.toString() + " e " + nota2.toString(), style: TextStyle(fontSize: 32, color: Colors.white),),
+                        child: Text(
+                          nota1.toString() + " e " + nota2.toString(),
+                          style: TextStyle(fontSize: 32, color: Colors.white),
+                        ),
                       ),
                     ],
                   ),
                   Padding(
                     padding: EdgeInsets.all(32),
-                    child: Text("Neste perido, sua média é:", style: TextStyle(fontSize: 16),),
+                    child: Text(
+                      "Neste período, sua média é:",
+                      style: TextStyle(fontSize: 16),
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
-                    child: Text(median.toString(), style: TextStyle(fontSize: 32, color: Colors.white),),
+                    child: Text(
+                      median.toString(),
+                      style: TextStyle(fontSize: 32, color: Colors.white),
+                    ),
                   ),
                 ],
               ),
@@ -64,9 +76,9 @@ class DashboardAluno extends StatelessWidget {
                 height: 50,
                 child: Center(
                     child: Text(
-                      'Sair',
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  'Sair',
+                  style: TextStyle(color: Colors.white),
+                )),
               ),
             ),
           ),
