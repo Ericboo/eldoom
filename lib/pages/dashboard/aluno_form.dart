@@ -1,8 +1,8 @@
 import 'package:eldoom/models/aluno.dart';
+import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/material.dart';
 
 class AlunoForm extends StatelessWidget {
-
   final TextEditingController _nomeControl = TextEditingController();
   final TextEditingController _emailControl = TextEditingController();
   final TextEditingController _senhaControl = TextEditingController();
@@ -11,11 +11,13 @@ class AlunoForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Matricular aluno'),),
+      appBar: AppBar(
+        title: Text('Matricular aluno'),
+      ),
       body: Column(
         children: [
           InfoInput(_nomeControl, 'Nome Completo', Icons.person, false),
-          InfoInput(_emailControl,'Email', Icons.alternate_email, false),
+          InfoInput(_emailControl, 'Email', Icons.alternate_email, false),
           InfoInput(_senhaControl, 'Senha', Icons.lock, true),
           InfoInput(_confirmSenhaControl, 'Confirme a senha', Icons.lock, true),
           Padding(
@@ -28,7 +30,9 @@ class AlunoForm extends StatelessWidget {
                 if (_senhaControl.text != _confirmSenhaControl.text) {
                   return;
                 }
-                final Aluno aluno = Aluno(_nomeControl.text, _emailControl.text, _senhaControl.text);
+                final Aluno aluno = new Aluno(
+                    _nomeControl.text, _emailControl.text, _senhaControl.text);
+                aluno.setId(saveAlunos(aluno));
                 Navigator.pop(context, aluno);
               },
               child: Container(
@@ -40,12 +44,12 @@ class AlunoForm extends StatelessWidget {
                 height: 50,
                 child: Center(
                     child: Text(
-                      'Confirmar',
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  'Confirmar',
+                  style: TextStyle(color: Colors.white),
+                )),
               ),
             ),
-          ),//Button
+          ), //Button
         ],
       ),
     );
@@ -53,7 +57,6 @@ class AlunoForm extends StatelessWidget {
 }
 
 class InfoInput extends StatelessWidget {
-
   final TextEditingController _controller;
   final String label;
   final IconData icon;
@@ -73,7 +76,7 @@ class InfoInput extends StatelessWidget {
         child: TextFormField(
           controller: _controller,
           keyboardType:
-          isObscure ? TextInputType.text : TextInputType.emailAddress,
+              isObscure ? TextInputType.text : TextInputType.emailAddress,
           obscureText: isObscure,
           style: TextStyle(color: Colors.white, fontSize: 20),
           decoration: InputDecoration(
