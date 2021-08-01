@@ -6,10 +6,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   final Color? primaryColor = Colors.lightBlue[500];
   @override
-
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Eldoom',

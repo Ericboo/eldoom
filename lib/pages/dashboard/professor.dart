@@ -1,5 +1,6 @@
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
 import 'package:flutter/material.dart';
+import 'package:eldoom/web_api/firebase_connection.dart';
 
 class DashboardProfessor extends StatefulWidget {
   @override
@@ -7,7 +8,6 @@ class DashboardProfessor extends StatefulWidget {
 }
 
 class _DashboardProfessorState extends State<DashboardProfessor> {
-
   final List<dynamic> alunos = [];
 
   @override
@@ -28,18 +28,24 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                   child: Row(
                     children: [
                       InkWell(
-                        child: Icon(Icons.close, color: Colors.red[400],),
-                        onTap: () {
-                          setState(() {
-                            alunos.removeAt(index);
-                          });
-                        }
-                      ),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.red[400],
+                          ),
+                          onTap: () {
+                            setState(() {
+                              alunos.removeAt(index);
+                            });
+                          }),
                       Expanded(child: Text(alunos[index].nome)),
                       NotaForm(),
-                      SizedBox(width: 16,),
+                      SizedBox(
+                        width: 16,
+                      ),
                       NotaForm(),
-                      SizedBox(width: 12,)
+                      SizedBox(
+                        width: 12,
+                      )
                     ],
                   ),
                 ),
@@ -57,21 +63,19 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
             if (novoAluno == null) {
               return;
             }
+            novoAluno.setId(saveAlunos(novoAluno));
             alunos.add(novoAluno);
           });
           setState(() {});
         },
         child: Icon(Icons.add),
-        backgroundColor: Theme
-            .of(context)
-            .primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
 }
 
 class NotaForm extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -1,5 +1,4 @@
 import 'package:eldoom/models/aluno.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 //TODO: VERIFICAR SE É UM ALUNO OU PROFESSOR NO BANCO DE DADOS
