@@ -31,7 +31,7 @@ class AlunoForm extends StatelessWidget {
                   return;
                 }
                 final Aluno aluno = new Aluno(
-                    _nomeControl.text, _emailControl.text, _senhaControl.text);
+                    _nomeControl.text, _emailControl.text, _senhaControl.text, -1.0, -1.0);
                 Navigator.pop(context, aluno);
               },
               child: Container(

@@ -9,7 +9,21 @@ class DashboardProfessor extends StatefulWidget {
 }
 
 class _DashboardProfessorState extends State<DashboardProfessor> {
-  final List<dynamic> alunos = [];
+  List<dynamic> alunos = [];
+
+  void updateAlunos() {
+    getAlunos().then((value) => {
+      this.setState(() {
+        this.alunos = value;
+      }),
+    });
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    updateAlunos();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,44 +31,66 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
       appBar: AppBar(
         title: Text('Sua turma'),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              Card(
-                color: Theme.of(context).primaryColor,
-                margin: EdgeInsets.all(8),
-                child: Container(
-                  height: 40,
-                  child: Row(
-                    children: [
-                      InkWell(
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.red[400],
+      body: FutureBuilder(
+        future: getAlunos(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+
+            case ConnectionState.waiting:
+              return Center(child: CircularProgressIndicator());
+
+            case ConnectionState.done:
+              alunos = snapshot.data as List<dynamic>;
+              //updateAlunos();
+              return ListView.builder(
+                itemCount: alunos.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                      children: [
+                        Card(
+                          color: Theme.of(context).primaryColor,
+                          margin: EdgeInsets.all(8),
+                          child: Container(
+                            height: 40,
+                            child: Row(
+                              children: [
+                                SizedBox(width: 10,),//substituindo o botão de apagar.
+                               /* InkWell(TODO:FAZER ISSO FUNCIONAR OU APAGAR
+                                    child: Icon(
+                                      Icons.close,
+                                      color: Colors.red[400],
+                                    ),
+                                    onTap: () {
+                                      setState(() {
+                                        alunos.removeAt(index);
+                                        deleteAluno(alunos[index]);
+                                      });
+                                    }),*/
+                                Expanded(child: Text(alunos[index].nome)),
+                                NotaForm(),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                NotaForm(),
+                                SizedBox(
+                                  width: 12,
+                                )
+                              ],
+                            ),
                           ),
-                          onTap: () {
-                            setState(() {
-                              alunos.removeAt(index);
-                            });
-                          }),
-                      Expanded(child: Text(alunos[index].nome)),
-                      NotaForm(),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      NotaForm(),
-                      SizedBox(
-                        width: 12,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
+                        ),
+                      ],
+                    );
+                }
+              );
+
+            case ConnectionState.none:
+              return Text('Unexpected error');
+
+              case ConnectionState.active:
+                return Text('Unexpected error');
+          }
         },
-        itemCount: alunos.length,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

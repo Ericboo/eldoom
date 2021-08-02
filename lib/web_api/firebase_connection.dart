@@ -8,8 +8,26 @@ import 'package:firebase_database/firebase_database.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 
+Future<List<dynamic>> getAlunos () async {
+  DataSnapshot dataSnapshot = await databaseReference.child('alunos/').once();
+  List<dynamic> alunos = [];
+  if (dataSnapshot.value != null) {
+    dataSnapshot.value.forEach((key, value) {
+      var aluno = novoAluno(value);
+      aluno.setId(databaseReference.child('alunos/' + key));
+      alunos.add(aluno);
+    });
+  }
+  return alunos;
+}
+
 DatabaseReference saveAlunos(Aluno aluno) {
   var id = databaseReference.child('alunos/').push();
   id.set(aluno.toJson());
   return id;
+}
+
+void deleteAluno(Aluno aluno) {
+  var id = aluno.getId();
+  id.remove();
 }
