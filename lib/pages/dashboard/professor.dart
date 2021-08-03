@@ -13,14 +13,14 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
 
   void updateAlunos() {
     getAlunos().then((value) => {
-      this.setState(() {
-        this.alunos = value;
-      }),
-    });
+          this.setState(() {
+            this.alunos = value;
+          }),
+        });
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     updateAlunos();
   }
@@ -35,7 +35,6 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
         future: getAlunos(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
-
             case ConnectionState.waiting:
               return Center(child: CircularProgressIndicator());
 
@@ -43,9 +42,9 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
               alunos = snapshot.data as List<dynamic>;
               //updateAlunos();
               return ListView.builder(
-                itemCount: alunos.length,
-                itemBuilder: (context, index) {
-                  return Column(
+                  itemCount: alunos.length,
+                  itemBuilder: (context, index) {
+                    return Column(
                       children: [
                         Card(
                           color: Theme.of(context).primaryColor,
@@ -54,18 +53,21 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                             height: 40,
                             child: Row(
                               children: [
-                                SizedBox(width: 10,),//substituindo o botão de apagar.
-                               /* InkWell(TODO:FAZER ISSO FUNCIONAR OU APAGAR
+                                SizedBox(
+                                  width: 10,
+                                ), //substituindo o botão de apagar.
+                                InkWell(
+                                    //TODO:FAZER ISSO FUNCIONAR OU APAGAR
                                     child: Icon(
                                       Icons.close,
                                       color: Colors.red[400],
                                     ),
                                     onTap: () {
                                       setState(() {
-                                        alunos.removeAt(index);
                                         deleteAluno(alunos[index]);
+                                        alunos.removeAt(index);
                                       });
-                                    }),*/
+                                    }),
                                 Expanded(child: Text(alunos[index].nome)),
                                 NotaForm(),
                                 SizedBox(
@@ -81,14 +83,13 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                         ),
                       ],
                     );
-                }
-              );
+                  });
 
             case ConnectionState.none:
               return Text('Unexpected error');
 
-              case ConnectionState.active:
-                return Text('Unexpected error');
+            case ConnectionState.active:
+              return Text('Unexpected error');
           }
         },
       ),
