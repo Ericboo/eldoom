@@ -44,6 +44,9 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
               return ListView.builder(
                   itemCount: alunos.length,
                   itemBuilder: (context, index) {
+                    if (alunos[index].isAluno == false) {
+                      return Container();
+                    }
                     return Column(
                       children: [
                         Card(

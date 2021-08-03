@@ -1,8 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 
 User novoUser(values) {
-
-  final Map<String, dynamic> novoUser= {
+  final Map<String, dynamic> novoUser = {
     'nome': '',
     'email': '',
     'senha': '',
@@ -14,13 +13,16 @@ User novoUser(values) {
     novoUser[key] = value;
   });
 
-  return new User(novoUser['nome'], novoUser['email'],
-      novoUser['senha'], double.parse(novoUser['nota1'].toString()),
-      double.parse(novoUser['nota2'].toString()), novoUser['isAluno']);
+  return new User(
+      novoUser['nome'],
+      novoUser['email'],
+      novoUser['senha'],
+      double.parse(novoUser['nota1'].toString()),
+      double.parse(novoUser['nota2'].toString()),
+      novoUser['isAluno']);
 }
 
 class User {
-
   late DatabaseReference _id;
   final String nome;
   final String email;
