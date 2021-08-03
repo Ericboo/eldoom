@@ -1,3 +1,4 @@
+import 'package:eldoom/models/user.dart';
 import 'package:eldoom/pages/dashboard/aluno.dart';
 import 'package:eldoom/pages/dashboard/professor.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,13 @@ import 'package:flutter/material.dart';
 //atribuir notas. good luck
 
 class Dashboard extends StatelessWidget {
-  final bool aluno = false;
+  final User user;
+
+  Dashboard(this.user);
 
   @override
   Widget build(BuildContext context) {
-    return aluno ? DashboardAluno() : DashboardProfessor();
+    return user.isAluno ? DashboardAluno(user) : DashboardProfessor();
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:eldoom/pages/dashboard/dashboard.dart';
+import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/material.dart';
 
 //Login é a pagina de abertura do aplicativo. O professor ou aluno irá inserir
@@ -16,8 +17,19 @@ class _LoginState extends State<Login> {
   final TextEditingController _userControl = TextEditingController();
   final TextEditingController _senhaControl = TextEditingController();
 
+  List<dynamic> users = [];
+
+  void listUsers() {
+    getUser().then((value) => {
+          this.setState(() {
+            this.users = value;
+          }),
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
+    listUsers();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -28,7 +40,8 @@ class _LoginState extends State<Login> {
         children: [
           LoginInput('Email', Icons.person, false, _userControl),
           LoginInput('Senha', Icons.lock, true, _senhaControl),
-          Padding(//Lembre-se de mim checkbox//TODO: DESCOBRIR COMO FAZER ISSO FUNCIONAR.
+          Padding(
+            //Lembre-se de mim checkbox//TODO: DESCOBRIR COMO FAZER ISSO FUNCIONAR.
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
@@ -51,7 +64,8 @@ class _LoginState extends State<Login> {
               ],
             ),
           ),
-          Padding(//Botão de loguin
+          Padding(
+            //Botão de login
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
               onTap: () {
@@ -63,9 +77,23 @@ class _LoginState extends State<Login> {
                   )));
                   return;
                 }
-                if (true) {//TODO: VALIDAR LOGIN NO BANCO DE DADOS
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Dashboard()));
+                bool data = false;
+                for (var index = 0; index < users.length; index++) {
+                  if (users[index].email == _userControl.text &&
+                      users[index].senha == _senhaControl.text) {
+                    data = true;
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Dashboard(users[index])));
+                  }
+                }
+                if (!data) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                    'Dados incorretos.',
+                    style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                  )));
                 }
               },
               child: Container(
@@ -76,9 +104,9 @@ class _LoginState extends State<Login> {
                 width: double.infinity,
                 height: 50,
                 child: Center(
-                    child: Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),

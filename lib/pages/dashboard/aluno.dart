@@ -1,12 +1,14 @@
+import 'package:eldoom/models/user.dart';
 import 'package:flutter/material.dart';
 
 class DashboardAluno extends StatelessWidget {
-  final double nota1 = 8;
-  final double nota2 = 10;
+
+  final User aluno;
+  DashboardAluno(this.aluno);
 
   @override
   Widget build(BuildContext context) {
-    final double median = (nota1 + nota2) / 2;
+    final double median = (aluno.nota1 + aluno.nota2) / 2;
     return Scaffold(
       appBar: AppBar(
         title: Text('Notas'),
@@ -39,7 +41,7 @@ class DashboardAluno extends StatelessWidget {
                         //TODO: verificar se existem as notas antes de mostrá-las.
                         padding: EdgeInsets.all(16),
                         child: Text(
-                          nota1.toString() + " e " + nota2.toString(),
+                          aluno.nota1.toString() + " e " + aluno.nota2.toString(),
                           style: TextStyle(fontSize: 32, color: Colors.white),
                         ),
                       ),

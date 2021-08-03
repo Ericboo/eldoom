@@ -13,10 +13,10 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
 
   void updateAlunos() {
     getUser().then((value) => {
-          this.setState(() {
-            this.alunos = value;
-          }),
-        });
+      this.setState(() {
+        this.alunos = value;
+      }),
+    });
   }
 
   @override
