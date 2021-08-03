@@ -1,28 +1,31 @@
 import 'package:firebase_database/firebase_database.dart';
 
-Aluno novoAluno(values) {
+User novoUser(values) {
 
-  final Map<String, dynamic> novoAluno = {
+  final Map<String, dynamic> novoUser= {
     'nome': '',
     'email': '',
     'senha': '',
     'nota1': -1.0,
     'nota2': -1.0,
+    'isAluno': true,
   };
   values.forEach((key, value) {
-    novoAluno[key] = value;
+    novoUser[key] = value;
   });
 
-  return new Aluno(novoAluno['nome'], novoAluno['email'],
-      novoAluno['senha'], double.parse(novoAluno['nota1'].toString()),
-      double.parse(novoAluno['nota2'].toString()));
+  return new User(novoUser['nome'], novoUser['email'],
+      novoUser['senha'], double.parse(novoUser['nota1'].toString()),
+      double.parse(novoUser['nota2'].toString()), novoUser['isAluno']);
 }
 
-class Aluno {
+class User {
+
   late DatabaseReference _id;
   final String nome;
   final String email;
   final String senha;
+  final bool isAluno;
   double nota1;
   double nota2;
 
@@ -41,8 +44,9 @@ class Aluno {
       'senha': this.senha,
       'nota1': this.nota1,
       'nota2': this.nota2,
+      'isAluno': this.isAluno,
     };
   }
 
-  Aluno(this.nome, this.email, this.senha, this.nota1, this.nota2);
+  User(this.nome, this.email, this.senha, this.nota1, this.nota2, this.isAluno);
 }

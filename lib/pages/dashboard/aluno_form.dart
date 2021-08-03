@@ -1,4 +1,4 @@
-import 'package:eldoom/models/aluno.dart';
+import 'package:eldoom/models/user.dart';
 import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/material.dart';
 
@@ -30,8 +30,8 @@ class AlunoForm extends StatelessWidget {
                 if (_senhaControl.text != _confirmSenhaControl.text) {
                   return;
                 }
-                final Aluno aluno = new Aluno(
-                    _nomeControl.text, _emailControl.text, _senhaControl.text, -1.0, -1.0);
+                final User aluno = new User(
+                    _nomeControl.text, _emailControl.text, _senhaControl.text, -1.0, -1.0, true);
                 Navigator.pop(context, aluno);
               },
               child: Container(

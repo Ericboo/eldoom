@@ -12,7 +12,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
   List<dynamic> alunos = [];
 
   void updateAlunos() {
-    getAlunos().then((value) => {
+    getUser().then((value) => {
           this.setState(() {
             this.alunos = value;
           }),
@@ -32,7 +32,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
         title: Text('Sua turma'),
       ),
       body: FutureBuilder(
-        future: getAlunos(),
+        future: getUser(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -53,18 +53,14 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                             height: 40,
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: 10,
-                                ), //substituindo o botão de apagar.
                                 InkWell(
-                                    //TODO:FAZER ISSO FUNCIONAR OU APAGAR
                                     child: Icon(
                                       Icons.close,
                                       color: Colors.red[400],
                                     ),
                                     onTap: () {
                                       setState(() {
-                                        deleteAluno(alunos[index]);
+                                        deleteUser(alunos[index]);
                                         alunos.removeAt(index);
                                       });
                                     }),
@@ -101,7 +97,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
             if (novoAluno == null) {
               return;
             }
-            novoAluno.setId(saveAlunos(novoAluno));
+            novoAluno.setId(saveUser(novoAluno));
             alunos.add(novoAluno);
           });
           setState(() {});

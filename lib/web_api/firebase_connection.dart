@@ -1,4 +1,4 @@
-import 'package:eldoom/models/aluno.dart';
+import 'package:eldoom/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -8,26 +8,26 @@ import 'package:firebase_database/firebase_database.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 
-Future<List<dynamic>> getAlunos () async {
-  DataSnapshot dataSnapshot = await databaseReference.child('alunos/').once();
-  List<dynamic> alunos = [];
+Future<List<dynamic>> getUser () async {
+  DataSnapshot dataSnapshot = await databaseReference.child('user/').once();
+  List<dynamic> users = [];
   if (dataSnapshot.value != null) {
     dataSnapshot.value.forEach((key, value) {
-      var aluno = novoAluno(value);
-      aluno.setId(databaseReference.child('alunos/' + key));
-      alunos.add(aluno);
+      var user = novoUser(value);
+      user.setId(databaseReference.child('user/' + key));
+      users.add(user);
     });
   }
-  return alunos;
+  return users;
 }
 
-DatabaseReference saveAlunos(Aluno aluno) {
-  var id = databaseReference.child('alunos/').push();
+DatabaseReference saveUser(User aluno) {
+  var id = databaseReference.child('user/').push();
   id.set(aluno.toJson());
   return id;
 }
 
-void deleteAluno(Aluno aluno) {
+void deleteUser(User aluno) {
   var id = aluno.getId();
   id.remove();
 }
