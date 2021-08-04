@@ -31,3 +31,12 @@ void deleteUser(User aluno) {
   var id = aluno.getId();
   id.remove();
 }
+
+void updateUser(User aluno, int nota1, int nota2) {
+  var id = aluno.getId();
+  Map<String,dynamic> mapa = {
+    "nota1": nota1,
+    "nota2": nota2,
+  };
+  id.update(mapa);
+}

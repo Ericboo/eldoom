@@ -21,7 +21,7 @@ class AlunoForm extends StatelessWidget {
           InfoInput(_senhaControl, 'Senha', Icons.lock, true),
           InfoInput(_confirmSenhaControl, 'Confirme a senha', Icons.lock, true),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
             child: InkWell(
               onTap: () {
                 if (_nomeControl.text.isEmpty || _emailControl.text.isEmpty) {
@@ -30,8 +30,8 @@ class AlunoForm extends StatelessWidget {
                 if (_senhaControl.text != _confirmSenhaControl.text) {
                   return;
                 }
-                final User aluno = new User(
-                    _nomeControl.text, _emailControl.text, _senhaControl.text, -1.0, -1.0, true);
+                final User aluno = new User(_nomeControl.text,
+                    _emailControl.text, _senhaControl.text, -1.0, -1.0, true);
                 Navigator.pop(context, aluno);
               },
               child: Container(
@@ -40,7 +40,7 @@ class AlunoForm extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 width: double.infinity,
-                height: 50,
+                height: 40,
                 child: Center(
                     child: Text(
                   'Confirmar',
@@ -66,7 +66,7 @@ class InfoInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(10),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).primaryColor, width: 2),
