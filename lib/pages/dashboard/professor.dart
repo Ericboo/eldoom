@@ -132,7 +132,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
 class NotaForm extends StatelessWidget {
   final bool isNota1;
   final TextEditingController _controller = TextEditingController();
-  final User aluno;
+  final Usuario aluno;
 
   NotaForm(this.isNota1, this.aluno);
 

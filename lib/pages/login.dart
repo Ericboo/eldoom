@@ -1,11 +1,11 @@
 import 'package:eldoom/pages/dashboard/dashboard.dart';
 import 'package:eldoom/web_api/firebase_connection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 //Login é a pagina de abertura do aplicativo. O professor ou aluno irá inserir
 //suas credenciais e o aplicativo irá validar num banco de dados;
-
-//TODO: implementar uma web api.
 
 class Login extends StatefulWidget {
   @override
@@ -16,19 +16,30 @@ class _LoginState extends State<Login> {
   bool isChecked = false;
   final TextEditingController _userControl = TextEditingController();
   final TextEditingController _senhaControl = TextEditingController();
+  late Future<FirebaseAuth> firebaseAuth;
+  late UserCredential userCredential;
 
   List<dynamic> users = [];
 
   void listUsers() {
     getUser().then((value) => {
-          this.setState(() {
-            this.users = value;
-          }),
-        });
+      this.setState(() {
+        this.users = value;
+      }),
+    });
+  }
+
+  Future<FirebaseAuth> getFirebaseInstance() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    if (FirebaseAuth.instance.currentUser != null) {
+      await FirebaseAuth.instance.signOut();
+    }
+    return FirebaseAuth.instance;
   }
 
   @override
   Widget build(BuildContext context) {
+    firebaseAuth = getFirebaseInstance();
     listUsers();
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +79,7 @@ class _LoginState extends State<Login> {
             //Botão de login
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 if (_userControl.text.isEmpty || _senhaControl.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
@@ -77,23 +88,32 @@ class _LoginState extends State<Login> {
                   )));
                   return;
                 }
-                bool data = false;
-                for (var index = 0; index < users.length; index++) {
-                  if (users[index].email == _userControl.text &&
-                      users[index].senha == _senhaControl.text) {
-                    data = true;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Dashboard(users[index])));
+                try {
+                  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _userControl.text,
+                      password: _senhaControl.text
+                  );
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'user-not-found') {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Dados incorretos.',
+                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                        )));
+                  } else if (e.code == 'wrong-password') {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Dados incorretos.',
+                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                        )));
                   }
+                  return;
                 }
-                if (!data) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                    'Dados incorretos.',
-                    style: TextStyle(color: Colors.redAccent, fontSize: 16),
-                  )));
+                for (var index = 0; index < users.length; index++) {
+                  if (users[index].credential == userCredential.user!.uid.toString()) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Dashboard(users[index])));
+                    break;
+                  }
                 }
               },
               child: Container(

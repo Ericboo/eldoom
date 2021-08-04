@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class DashboardAluno extends StatelessWidget {
 
-  final User aluno;
+  final Usuario aluno;
   DashboardAluno(this.aluno);
 
   @override
@@ -68,7 +68,9 @@ class DashboardAluno extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+
+              },
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.red[300],

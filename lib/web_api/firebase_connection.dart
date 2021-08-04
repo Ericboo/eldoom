@@ -1,4 +1,5 @@
 import 'package:eldoom/models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -21,22 +22,27 @@ Future<List<dynamic>> getUser() async {
   return users;
 }
 
-DatabaseReference saveUser(User aluno) {
+DatabaseReference saveUser(Usuario aluno) {
   var id = databaseReference.child('user/').push();
   id.set(aluno.toJson());
   return id;
 }
 
-void deleteUser(User aluno) {
+void deleteUser(Usuario aluno) {
   var id = aluno.getId();
   id.remove();
 }
 
-void updateUser(User aluno) {
+void updateUser(Usuario aluno) {
   var id = aluno.getId();
   Map<String, dynamic> mapa = {
     "nota1": aluno.nota1,
     "nota2": aluno.nota2,
   };
   id.update(mapa);
+}
+
+void autentication () async {
+  FirebaseApp firebaseApp = await Firebase.initializeApp();
+  FirebaseAuth auth = FirebaseAuth.instance;
 }
