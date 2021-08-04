@@ -77,7 +77,11 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                                               alunos.removeAt(index);
                                             });
                                           }),
-                                      Expanded(child: Text(alunos[index].nome)),
+                                      Expanded(
+                                          child: Text(
+                                        alunos[index].nome,
+                                        style: TextStyle(fontSize: 20),
+                                      )),
                                       NotaForm(true, alunos[index]),
                                       SizedBox(
                                         width: 16,
@@ -165,6 +169,7 @@ class NotaForm extends StatelessWidget {
       ),
       child: Center(
         child: TextFormField(
+          textAlign: TextAlign.center,
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,1}')),
           ],
