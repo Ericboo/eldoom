@@ -166,9 +166,13 @@ class NotaForm extends StatelessWidget {
       child: Center(
         child: TextFormField(
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,2}')),
+            FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,1}')),
           ],
           onChanged: (value) {
+            var temp = double.tryParse(_controller.text);
+            if (temp != null && temp > 10) {
+              _controller.text = '10.0';
+            }
             setNota(value);
           },
           controller: _controller,
