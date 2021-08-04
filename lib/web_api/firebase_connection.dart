@@ -8,7 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 final databaseReference = FirebaseDatabase.instance.reference();
 
-Future<List<dynamic>> getUser () async {
+Future<List<dynamic>> getUser() async {
   DataSnapshot dataSnapshot = await databaseReference.child('user/').once();
   List<dynamic> users = [];
   if (dataSnapshot.value != null) {
@@ -32,11 +32,11 @@ void deleteUser(User aluno) {
   id.remove();
 }
 
-void updateUser(User aluno, int nota1, int nota2) {
+void updateUser(User aluno) {
   var id = aluno.getId();
-  Map<String,dynamic> mapa = {
-    "nota1": nota1,
-    "nota2": nota2,
+  Map<String, dynamic> mapa = {
+    "nota1": aluno.nota1,
+    "nota2": aluno.nota2,
   };
   id.update(mapa);
 }
