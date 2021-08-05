@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 
 //Dashboard é a tela que mostrará informações úteis tanto aos professores quanto
 //aos alunos. A tela deverá saber se o login é referente a um professor ou aluno.
-//ao aluno a tela deve mostrar as duas notas, a média e [talvez] os professores.
-//ao professor a tela deve mostrar cada aluno em uma lista e permitir ao professor
-//atribuir notas. good luck
+//Ao aluno, a tela deve mostrar as duas notas e a média.
+//ao professor, a tela deve mostrar cada aluno em uma lista e permitir ao professor
+//atribuir notas.
 
 class Dashboard extends StatelessWidget {
   final Usuario user;

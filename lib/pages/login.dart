@@ -115,7 +115,7 @@ class _LoginState extends State<Login> {
                       email: _userControl.text,
                       password: _senhaControl.text
                   );
-                } on FirebaseAuthException catch (e) {
+                } on FirebaseAuthException {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
                         'Dados incorretos.',

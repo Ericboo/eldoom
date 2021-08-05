@@ -39,6 +39,6 @@ void updateUser(Usuario aluno) {
 }
 
 void autentication () async {
-  FirebaseApp firebaseApp = await Firebase.initializeApp();
-  FirebaseAuth auth = FirebaseAuth.instance;
+  await Firebase.initializeApp();
+  FirebaseAuth.instance;
 }

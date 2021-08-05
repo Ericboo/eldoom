@@ -11,6 +11,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Eldoom',
+      debugShowMaterialGrid: false,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryColor,
         scaffoldBackgroundColor: Colors.grey[900],
