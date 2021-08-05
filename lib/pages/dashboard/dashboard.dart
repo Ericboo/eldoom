@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 //atribuir notas. good luck
 
 class Dashboard extends StatelessWidget {
-  final User user;
+  final Usuario user;
 
   Dashboard(this.user);
 

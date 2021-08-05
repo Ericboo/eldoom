@@ -1,8 +1,9 @@
 import 'package:eldoom/models/user.dart';
-import 'package:eldoom/web_api/firebase_connection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AlunoForm extends StatelessWidget {
+
   final TextEditingController _nomeControl = TextEditingController();
   final TextEditingController _emailControl = TextEditingController();
   final TextEditingController _senhaControl = TextEditingController();
@@ -23,15 +24,57 @@ class AlunoForm extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10),
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 if (_nomeControl.text.isEmpty || _emailControl.text.isEmpty) {
                   return;
                 }
                 if (_senhaControl.text != _confirmSenhaControl.text) {
                   return;
                 }
-                final User aluno = new User(_nomeControl.text,
-                    _emailControl.text, _senhaControl.text, -1.0, -1.0, true);
+                UserCredential credential;
+                try {
+                  credential = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                      email: _emailControl.text,
+                      password: _senhaControl.text
+                  );
+                } on FirebaseException catch (e) {
+                  if (e.code == "email-already-in-use") {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Este email já está em uso.',
+                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                        )));
+                    return;
+                  }
+
+                  if (e.code == "invalid-email") {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Digite um email válido.',
+                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                        )));
+                    return;
+                  }
+
+                  if (e.code == "weak-password") {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text(
+                          'Insira uma senha de ao menos 6 dígitos.',
+                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                        )));
+                    return;
+                  }
+                  return;
+                }
+                final Usuario aluno = new Usuario(
+                    _nomeControl.text,
+                    credential.user!.uid.toString(),
+                    -1.0,
+                    -1.0,
+                    true
+                );
+
                 Navigator.pop(context, aluno);
               },
               child: Container(
@@ -56,6 +99,7 @@ class AlunoForm extends StatelessWidget {
 }
 
 class InfoInput extends StatelessWidget {
+
   final TextEditingController _controller;
   final String label;
   final IconData icon;

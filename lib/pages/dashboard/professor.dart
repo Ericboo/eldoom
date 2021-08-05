@@ -1,5 +1,6 @@
 import 'package:eldoom/models/user.dart';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +31,10 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+          FirebaseAuth.instance.signOut();
+          Navigator.pop(context);
+        },),
         title: Text('Sua turma'),
       ),
       body: Column(children: [
@@ -132,7 +137,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
 class NotaForm extends StatelessWidget {
   final bool isNota1;
   final TextEditingController _controller = TextEditingController();
-  final User aluno;
+  final Usuario aluno;
 
   NotaForm(this.isNota1, this.aluno);
 
