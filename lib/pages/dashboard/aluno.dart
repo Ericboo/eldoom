@@ -1,6 +1,7 @@
 import 'package:eldoom/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardAluno extends StatelessWidget {
   final Usuario aluno;
@@ -117,8 +118,8 @@ class RetornaNota extends StatelessWidget {
       existeMed = true;
       return Text(
         'Sua nota 1 é ' +
-            aluno.nota1.toString() +
-            ' e sua nota 2 é ' +
+            aluno.nota1.toString() + "."
+            '\nSua nota 2 é ' +
             aluno.nota2.toString() +
             '.',
         textAlign: TextAlign.center,
@@ -153,22 +154,20 @@ class RetornaNota extends StatelessWidget {
           ),
           Padding(
             padding: EdgeInsets.all(24),
-            child: Text(
+            child: existeMed == false ? Container() : Text(
               "Neste período, sua média é:",
               style: TextStyle(fontSize: 16),
             ),
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: Text(
-                  existeMed == false
-                      ? 'Sua média ainda não existe.'
-                      : median.toString(),
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                existeMed == false
+                    ? ''
+                    : median.toString(),
+                style: TextStyle(fontSize: 24, color: Colors.white),
               ),
             ),
           ),

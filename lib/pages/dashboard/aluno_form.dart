@@ -110,7 +110,7 @@ class InfoInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(15),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Theme.of(context).primaryColor, width: 2),

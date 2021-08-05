@@ -3,6 +3,7 @@ import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //Login é a pagina de abertura do aplicativo. O professor ou aluno irá inserir
 //suas credenciais e o aplicativo irá validar num banco de dados;
@@ -10,7 +11,7 @@ import 'package:flutter/material.dart';
 class Login extends StatefulWidget {
 
   Future<FirebaseAuth> getFirebaseInstance() async {
-    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    await Firebase.initializeApp();
     if (FirebaseAuth.instance.currentUser != null) {
       await FirebaseAuth.instance.signOut();
     }
@@ -28,10 +29,27 @@ class _LoginState extends State<Login> {
   late Future<FirebaseAuth> firebaseAuth;
   late UserCredential userCredential;
 
+  void rememberUser() async {
+    try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      if (preferences.getBool("remember_me") == true) {
+        setState(() {
+          isChecked = true;
+          _userControl.text = preferences.getString('email')!;
+          _senhaControl.text = preferences.getString('senha')!;
+        });
+
+      }
+    } catch (e){
+      print (e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     firebaseAuth = widget.getFirebaseInstance();
+    rememberUser();
   }
 
   List<dynamic> users = [];
@@ -57,7 +75,6 @@ class _LoginState extends State<Login> {
           LoginInput('Email', Icons.person, false, _userControl),
           LoginInput('Senha', Icons.lock, true, _senhaControl),
           Padding(
-            //Lembre-se de mim checkbox//TODO: DESCOBRIR COMO FAZER ISSO FUNCIONAR.
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               children: [
@@ -68,7 +85,7 @@ class _LoginState extends State<Login> {
                   value: isChecked,
                   onChanged: (bool? value) {
                     setState(() {
-                      isChecked = value!;
+                      _rememberMe(value!);
                     });
                   },
                 ),
@@ -99,19 +116,11 @@ class _LoginState extends State<Login> {
                       password: _senhaControl.text
                   );
                 } on FirebaseAuthException catch (e) {
-                  if (e.code == 'user-not-found') {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                          'Dados incorretos.',
-                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
-                        )));
-                  } else if (e.code == 'wrong-password') {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text(
-                          'Dados incorretos.',
-                          style: TextStyle(color: Colors.redAccent, fontSize: 16),
-                        )));
-                  }
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Dados incorretos.',
+                        style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                      )));
                   return;
                 }
                 bool excluido = true;
@@ -160,6 +169,18 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+  void _rememberMe(bool value) {
+    SharedPreferences.getInstance().then((prefs) => {
+      prefs.setBool("remember_me", value),
+      prefs.setString("email", _userControl.text),
+      prefs.setString("senha", _senhaControl.text),
+    });
+    setState(() {
+      isChecked = value;
+    });
+  }
+
 }
 
 class LoginInput extends StatefulWidget {
