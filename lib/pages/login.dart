@@ -103,12 +103,14 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
               onTap: () async {
+                listUsers();
                 if (_userControl.text.isEmpty || _passControl.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
+                    content: Text(
                     'Preencha os campos.',
                     style: TextStyle(color: Colors.redAccent, fontSize: 16),
-                  )));
+                    ),
+                  ));
                   return;
                 }
                 try {
@@ -134,10 +136,11 @@ class _LoginState extends State<Login> {
                 }
                 if (excluido) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                        'Lamento, sua conta foi excluída por um professor.',
-                        style: TextStyle(color: Colors.redAccent, fontSize: 16),
-                      )));
+                    content: Text(
+                      'Lamento, sua conta foi excluída por um professor.',
+                      style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                    ))
+                  );
                   FirebaseAuth.instance.currentUser!.delete();
                 }
               },

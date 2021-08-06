@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:eldoom/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -51,8 +49,6 @@ void updateUser(Usuario aluno) {
     'nota2': aluno.nota2,
     'isAluno': true,
   };
-
-  print(aluno.nota1);
 
   var user = databaseReference.collection('users').doc(aluno.credential);
   

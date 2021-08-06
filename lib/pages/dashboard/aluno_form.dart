@@ -26,19 +26,29 @@ class AlunoForm extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 if (_nomeControl.text.isEmpty || _emailControl.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Preencha os campos',
+                        style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                      )));
                   return;
                 }
                 if (_senhaControl.text != _confirmSenhaControl.text) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Os campos de senha diferem.',
+                        style: TextStyle(color: Colors.redAccent, fontSize: 16),
+                      )));
                   return;
                 }
-                UserCredential credential;
+                String credential = '';
                 try {
-                  credential = await FirebaseAuth.instance
+                  UserCredential newUser = await FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                       email: _emailControl.text,
                       password: _senhaControl.text,
                   );
-                  //que
+                  credential = newUser.user!.uid;
                 } on FirebaseException catch (e) {
                   if (e.code == "email-already-in-use") {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -70,7 +80,7 @@ class AlunoForm extends StatelessWidget {
                 }
                 final Usuario aluno = new Usuario(
                     _nomeControl.text,
-                    credential.user!.uid.toString(),
+                    credential,
                     -1.0,
                     -1.0,
                     true
@@ -119,8 +129,11 @@ class InfoInput extends StatelessWidget {
         ),
         child: TextFormField(
           controller: _controller,
+          autocorrect: false,
+          textCapitalization:
+            label.startsWith('Nome') ? TextCapitalization.words : TextCapitalization.none,
           keyboardType:
-              isObscure ? TextInputType.text : TextInputType.emailAddress,
+            isObscure ? TextInputType.text : TextInputType.emailAddress,
           obscureText: isObscure,
           style: TextStyle(color: Colors.white, fontSize: 20),
           decoration: InputDecoration(
