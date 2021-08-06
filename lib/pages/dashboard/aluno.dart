@@ -134,7 +134,7 @@ class RetornaNota extends StatelessWidget {
               child: Text(
                 existeMed == false
                     ? ''
-                    : median.toString(),
+                    : median.toStringAsPrecision(2),
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
             ),
