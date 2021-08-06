@@ -1,7 +1,7 @@
 import 'package:eldoom/pages/login.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 

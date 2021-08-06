@@ -6,19 +6,22 @@ import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/services.dart';
 
 class DashboardProfessor extends StatefulWidget {
+
   @override
   _DashboardProfessorState createState() => _DashboardProfessorState();
 }
 
 class _DashboardProfessorState extends State<DashboardProfessor> {
+
+
   List<dynamic> alunos = [];
 
   void updateAlunos() {
     getUser().then((value) => {
-          this.setState(() {
-            this.alunos = value;
-          }),
-        });
+      this.setState(() {
+        this.alunos = value;
+      }),
+    });
   }
 
   @override
@@ -122,7 +125,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
             if (novoAluno == null) {
               return;
             }
-            novoAluno.setId(saveUser(novoAluno));
+            saveUser(novoAluno);
             alunos.add(novoAluno);
           });
           setState(() {});

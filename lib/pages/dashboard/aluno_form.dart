@@ -36,8 +36,9 @@ class AlunoForm extends StatelessWidget {
                   credential = await FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                       email: _emailControl.text,
-                      password: _senhaControl.text
+                      password: _senhaControl.text,
                   );
+                  //que
                 } on FirebaseException catch (e) {
                   if (e.code == "email-already-in-use") {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

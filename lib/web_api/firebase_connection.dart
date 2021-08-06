@@ -1,41 +1,62 @@
+import 'dart:convert';
+
 import 'package:eldoom/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-final databaseReference = FirebaseDatabase.instance.reference();
+final databaseReference = FirebaseFirestore.instance;
 
 Future<List<dynamic>> getUser() async {
-  DataSnapshot dataSnapshot = await databaseReference.child('user/').once();
-  List<dynamic> users = [];
-  if (dataSnapshot.value != null) {
-    dataSnapshot.value.forEach((key, value) {
-      var user = novoUser(value);
-      user.setId(databaseReference.child('user/' + key));
-      users.add(user);
-    });
-  }
-  return users;
+  await Firebase.initializeApp();
+  CollectionReference fireUser = databaseReference.collection('users');
+  var user = [];
+  await fireUser.get().then((value) => {
+    for (var i = 0; i < value.docs.length; i++) {
+      user.add(novoUser(value.docs[i].data())),
+    }
+  });
+  return user;
 }
 
-DatabaseReference saveUser(Usuario aluno) {
-  var id = databaseReference.child('user/').push();
-  id.set(aluno.toJson());
-  return id;
+String saveUser(Usuario aluno) {
+
+  CollectionReference users = databaseReference.collection('users');
+
+  users.doc(aluno.credential).set({
+    'nome': aluno.nome,
+    'credential': aluno.credential,
+    'nota1': -1.0,
+    'nota2': -1.0,
+    'isAluno': true,
+  });
+  return aluno.credential;
 }
 
-void deleteUser(Usuario aluno) {
-  var id = aluno.getId();
-  id.remove();
+void deleteUser(Usuario aluno) async {
+
+  var user = databaseReference.collection('users').doc(aluno.credential);
+
+  user.delete();
+
 }
 
 void updateUser(Usuario aluno) {
-  var id = aluno.getId();
-  Map<String, dynamic> mapa = {
-    "nota1": aluno.nota1,
-    "nota2": aluno.nota2,
+
+
+  Map<String, dynamic> map = {
+    'nome': aluno.nome,
+    'credential': aluno.credential,
+    'nota1': aluno.nota1,
+    'nota2': aluno.nota2,
+    'isAluno': true,
   };
-  id.update(mapa);
+
+  print(aluno.nota1);
+
+  var user = databaseReference.collection('users').doc(aluno.credential);
+  
+  user.update(map);
 }
 
 void autentication () async {

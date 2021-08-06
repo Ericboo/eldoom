@@ -25,7 +25,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool isChecked = false;
   final TextEditingController _userControl = TextEditingController();
-  final TextEditingController _senhaControl = TextEditingController();
+  final TextEditingController _passControl = TextEditingController();
   late Future<FirebaseAuth> firebaseAuth;
   late UserCredential userCredential;
 
@@ -36,7 +36,7 @@ class _LoginState extends State<Login> {
         setState(() {
           isChecked = true;
           _userControl.text = preferences.getString('email')!;
-          _senhaControl.text = preferences.getString('senha')!;
+          _passControl.text = preferences.getString('senha')!;
         });
 
       }
@@ -50,6 +50,7 @@ class _LoginState extends State<Login> {
     super.initState();
     firebaseAuth = widget.getFirebaseInstance();
     rememberUser();
+    listUsers();
   }
 
   List<dynamic> users = [];
@@ -63,7 +64,7 @@ class _LoginState extends State<Login> {
   }
   @override
   Widget build(BuildContext context) {
-    listUsers();
+    //listUsers();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -73,7 +74,7 @@ class _LoginState extends State<Login> {
       body: Column(
         children: [
           LoginInput('Email', Icons.person, false, _userControl),
-          LoginInput('Senha', Icons.lock, true, _senhaControl),
+          LoginInput('Senha', Icons.lock, true, _passControl),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
@@ -102,7 +103,7 @@ class _LoginState extends State<Login> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12),
             child: InkWell(
               onTap: () async {
-                if (_userControl.text.isEmpty || _senhaControl.text.isEmpty) {
+                if (_userControl.text.isEmpty || _passControl.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
                     'Preencha os campos.',
@@ -113,7 +114,7 @@ class _LoginState extends State<Login> {
                 try {
                   userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
                       email: _userControl.text,
-                      password: _senhaControl.text
+                      password: _passControl.text
                   );
                 } on FirebaseAuthException {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -174,7 +175,7 @@ class _LoginState extends State<Login> {
     SharedPreferences.getInstance().then((prefs) => {
       prefs.setBool("remember_me", value),
       prefs.setString("email", _userControl.text),
-      prefs.setString("senha", _senhaControl.text),
+      prefs.setString("senha", _passControl.text),
     });
     setState(() {
       isChecked = value;
