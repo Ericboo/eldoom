@@ -14,7 +14,7 @@ sistema deve calcular a média aritmética para determinar a nota final do aluno
 também poderá fazer login e verificar a sua média.
 
 
-#VERSION 1.0 RELEASED: 
+# VERSION 1.0 RELEASED: 
 
 I hereby declare the official version 1.0 is now released.
 
