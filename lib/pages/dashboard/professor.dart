@@ -60,51 +60,68 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                       });
                     },
                     child: ListView.builder(
-                        itemCount: alunos.length,
-                        itemBuilder: (context, index) {
-                          if (alunos[index].isAluno == false) {
-                            return Container();
-                          }
-                          return Column(
-                            children: [
-                              Card(
-                                color: Theme.of(context).primaryColor,
-                                margin: EdgeInsets.all(8),
-                                child: Container(
-                                  height: 40,
-                                  child: Row(
+                      itemCount: alunos.length,
+                      itemBuilder: (context, index) {
+                        if (alunos[index].isAluno == false) {
+                          return Container();
+                        }
+                        return Dismissible(
+                          background: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),),
+                          key: Key(index.toString()),
+                          onDismissed: (direction) async {
+                            await showDialog(
+                              barrierDismissible: false,
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                //backgroundColor: Theme.of(context).primaryColor,
+                                title: Text('Excluir aluno?'),
+                                content: Row(children: [
+                                  Text('Deseja excluir '),
+                                  Text(alunos[index].nome),
+                                  Text('?'),
+                                ],),
+                                actions: [
+                                  Row(
                                     children: [
-                                      InkWell(
-                                          child: Icon(
-                                            Icons.close,
-                                            color: Colors.red[400],
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              deleteUser(alunos[index]);
-                                              alunos.removeAt(index);
-                                            });
-                                          }),
-                                      Expanded(
-                                          child: Text(
-                                        alunos[index].nome,
-                                        style: TextStyle(fontSize: 20),
-                                      )),
-                                      NotaForm(true, alunos[index]),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      NotaForm(false, alunos[index]),
-                                      SizedBox(
-                                        width: 12,
-                                      )
+                                      ExcludeButton(true, aluno: alunos[index]),
+                                      SizedBox(width: 10,),
+                                      ExcludeButton(false),
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
-                          );
-                        }),
+                            );
+                            setState(() {
+                              updateAlunos();
+                            });
+                          },
+                          child: Card(
+                            color: Theme.of(context).primaryColor,
+                            margin: EdgeInsets.all(8),
+                            child: Container(
+                              height: 40,
+                              child: Row(
+                                children: [
+                                  SizedBox(width: 15,),
+                                  Expanded(
+                                      child: Text(
+                                    alunos[index].nome,
+                                    style: TextStyle(fontSize: 20),
+                                  )),
+                                  NotaForm(true, alunos[index]),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  NotaForm(false, alunos[index]),
+                                  SizedBox(
+                                    width: 12,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                   );
 
                 case ConnectionState.none:
@@ -195,3 +212,53 @@ class NotaForm extends StatelessWidget {
     );
   }
 }
+
+
+class ExcludeButton extends StatelessWidget {
+
+  final bool isExcluding;
+  final Usuario? aluno;
+
+  ExcludeButton(this.isExcluding, {this.aluno});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          if (isExcluding) {
+            deleteUser(aluno!);
+          }
+            Navigator.pop(context);
+          },
+        child: Container(
+          child: Center(
+              child: Text(
+                isExcluding ? 'Excluir' : 'Cancelar',
+                style: TextStyle(fontSize: 16),),
+          ),
+          color: isExcluding ? Colors.red[300] : Colors.blue[300],
+          height: 40,
+        ),
+      ),
+    );
+  }
+}
+
+
+
+/*Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+  child: InkWell(
+      child: Icon(
+        Icons.close,
+        color: Colors.red[400],
+      ),
+      onTap: () {
+        setState(() {
+          deleteUser(alunos[index]);
+          alunos.removeAt(index);
+        });
+      }),
+),
+ */
