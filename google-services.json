@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "688572822763",
+    "firebase_url": "https://eldoom-52329-default-rtdb.firebaseio.com",
+    "project_id": "eldoom-52329",
+    "storage_bucket": "eldoom-52329.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688572822763:android:92d94b51e3c1463719faae",
+        "android_client_info": {
+          "package_name": "com.example.eldoom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688572822763-hu29rr5ulumcok750spm1veln0iqcavf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0SDse_91r9yTQOve26zeTdK_C0yOvNis"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688572822763-hu29rr5ulumcok750spm1veln0iqcavf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
