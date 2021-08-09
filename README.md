@@ -1,6 +1,7 @@
 # eldoom
 
-Dedicated repository to a sofware engineering flutter project. Eldoom is a fictitious name for a scholar system similar to Moodle (in concept more than execution).
+Dedicated repository to a sofware engineering flutter project. 
+Eldoom is a fictitious name for a scholar system similar to a students portal.
 # project scope(Portuguese):
 
 Considerem o seguinte cenário para o desenvolvimento de um sistema web em Flutter.
@@ -26,4 +27,18 @@ I hereby declare the official version 1.0 is now released.
 
 * Fast and simple interface.
 
+# VERSION 1.1 RELEASED:
 
+With dozens of visual increments.
+
+    Features:
+
+* Students are now dismissible widgets, meaning swipe to delete.
+
+* Logo and stuff related to "Eldoom" no longer exists, the idea of a defined trademark wasn't
+explicitly required by the project scope. 
+_Although "eldoom" was VISUALLY removed, it's still present in some definitions and titles, 
+including the github page, project's name and description. Unless an
+actual trademark is required, there's no reason to actively kill "eldoom"._
+
+* No more floating action button. It's better this way.
