@@ -32,6 +32,7 @@ class _LoginInputState extends State<LoginInput> {
           obscureText: widget.isObscure,
           style: TextStyle(color: Colors.black, fontSize: 20),
           decoration: InputDecoration(
+            suffix: null,
             border: InputBorder.none,
             icon: Icon(
               widget.icon,

@@ -43,7 +43,7 @@ class DashboardAluno extends StatelessWidget {
                           height: 12,
                         ),
                         Container(
-                          width: double.infinity,
+                          width: 400,
                           height: 300,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
@@ -65,7 +65,7 @@ class DashboardAluno extends StatelessWidget {
                           color: Colors.red[300],
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        width: double.infinity,
+                        width: 400,
                         height: 50,
                         child: Center(
                             child: Text(

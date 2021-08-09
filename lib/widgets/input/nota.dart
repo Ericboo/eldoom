@@ -41,24 +41,27 @@ class NotaForm extends StatelessWidget {
         border: Border.all(color: Theme.of(context).primaryColor, width: 1),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Center(
-        child: TextFormField(
-          decoration: InputDecoration(
-            border: InputBorder.none,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Center(
+          child: TextFormField(
+            decoration: InputDecoration(
+              border: InputBorder.none,
+            ),
+            textAlign: TextAlign.center,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,1}')),
+            ],
+            onChanged: (value) {
+              var temp = double.tryParse(_controller.text);
+              if (temp != null && temp > 10) {
+                _controller.text = '10.0';
+              }
+              setNota(value);
+            },
+            controller: _controller,
+            keyboardType: TextInputType.number,
           ),
-          textAlign: TextAlign.center,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,1}')),
-          ],
-          onChanged: (value) {
-            var temp = double.tryParse(_controller.text);
-            if (temp != null && temp > 10) {
-              _controller.text = '10.0';
-            }
-            setNota(value);
-          },
-          controller: _controller,
-          keyboardType: TextInputType.number,
         ),
       ),
     );

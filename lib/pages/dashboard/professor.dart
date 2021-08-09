@@ -40,59 +40,66 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
         title: Center(child: Text("Sua turma", style: TextStyle(fontFamily: 'Cream', color: Colors.black),)),
       ),
       body: Column(children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-              },
-              child: Container(
-                height: 35,
-                width: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  //color: Colors.redAccent,
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back, color: Colors.black,),
-                    Text('Sair', style: TextStyle(color: Colors.black, fontSize: 24),),
-                  ],
-                ),
-              ),
-            ),
-            Expanded(child: InkWell(
-              onTap: () async {
-                final Future future = Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => AlunoForm()));
-                await future.then((novoAluno) {
-                  if (novoAluno == null) {
-                    return;
-                  }
-                  saveUser(novoAluno);
-                  alunos.add(novoAluno);
-                });
-                setState(() {});
-              },
-              child: Container(
-                height: 35,
-                width: 90,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  //color: Colors.greenAccent,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('Adicionar aluno', style: TextStyle(color: Colors.black, fontSize: 20),),
-                    Icon(Icons.arrow_forward, color: Colors.black,),
-                  ],
+        Container(//botões
+          width: 500,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  height: 35,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.redAccent,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.arrow_back, color: Colors.black,),
+                      Text('Sair', style: TextStyle(color: Colors.black, fontSize: 24),),
+                    ],
+                  ),
                 ),
               ),
-            ),)
-          ],
+              SizedBox(width: 230,),
+              Expanded(child: InkWell(
+                onTap: () async {
+                  final Future future = Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => AlunoForm()));
+                  await future.then((novoAluno) {
+                    if (novoAluno == null) {
+                      return;
+                    }
+                    saveUser(novoAluno);
+                    alunos.add(novoAluno);
+                  });
+                  setState(() {});
+                },
+                child: Container(
+                  height: 35,
+                  width: 90,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.greenAccent,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(Icons.add, color: Colors.black,),
+                        Text('Adicionar aluno', style: TextStyle(color: Colors.black, fontSize: 20),),
+                      ],
+                    ),
+                  ),
+                ),
+              ),)
+            ],
+          ),
         ),
         Expanded(
           child: FutureBuilder(
@@ -118,58 +125,61 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                         if (alunos[index].isAluno == false) {
                           return Container();
                         }
-                        return Dismissible(
-                          background: Row(
-                            children: [
-                              Expanded(child: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),)),
-                              Container(alignment: AlignmentDirectional.centerEnd,color: Colors.red, child: Icon(Icons.delete_forever),),
-                            ],
-                          ),
-                          key: Key(index.toString()),
-                          onDismissed: (direction) async {
-                            await showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                //backgroundColor: Theme.of(context).primaryColor,
-                                title: Text('Excluir aluno?'),
-                                content: Text('Deseja excluir ' + alunos[index].nome + "?"),
-                                actions: [
-                                  Row(
-                                    children: [
-                                      ExcludeButton(true, aluno: alunos[index]),
-                                      SizedBox(width: 10,),
-                                      ExcludeButton(false),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                            setState(() {
-                              updateAlunos();
-                            });
-                          },
-                          child: Card(
-                            child: Container(
-                              height: 60,
-                              child: Row(
-                                children: [
-                                  Icon(Icons.view_headline, color: Colors.grey,),
-                                  SizedBox(width: 8,),
-                                  Expanded(
-                                      child: Text(
-                                    alunos[index].nome,
-                                    style: TextStyle(fontSize: 20,),
-                                  )),
-                                  NotaForm(true, alunos[index]),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  NotaForm(false, alunos[index]),
-                                  SizedBox(
-                                    width: 12,
-                                  )
-                                ],
+                        return Center(
+                          child: Dismissible(
+                            background: Row(
+                              children: [
+                                Expanded(child: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),)),
+                                Container(alignment: AlignmentDirectional.centerEnd,color: Colors.red, child: Icon(Icons.delete_forever),),
+                              ],
+                            ),
+                            key: Key(index.toString()),
+                            onDismissed: (direction) async {
+                              await showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  //backgroundColor: Theme.of(context).primaryColor,
+                                  title: Text('Excluir aluno?'),
+                                  content: Text('Deseja excluir ' + alunos[index].nome + "?"),
+                                  actions: [
+                                    Row(
+                                      children: [
+                                        ExcludeButton(true, aluno: alunos[index]),
+                                        SizedBox(width: 10,),
+                                        ExcludeButton(false),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                              setState(() {
+                                updateAlunos();
+                              });
+                            },
+                            child: Card(
+                              child: Container(
+                                width: 500,
+                                height: 60,
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.view_headline, color: Colors.grey,),
+                                    SizedBox(width: 8,),
+                                    Expanded(
+                                        child: Text(
+                                      alunos[index].nome,
+                                      style: TextStyle(fontSize: 20,),
+                                    )),
+                                    NotaForm(true, alunos[index]),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                    NotaForm(false, alunos[index]),
+                                    SizedBox(
+                                      width: 12,
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
