@@ -9,16 +9,6 @@ class DashboardAluno extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pop(context);
-          },
-        ),
-        title: Text('Seu espaço'),
-      ),
       body: LayoutBuilder(
         builder: (context, viewportConstraints) {
           return SingleChildScrollView(
@@ -34,6 +24,7 @@ class DashboardAluno extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 40,),
                         RichText(
                           text: TextSpan(
                               style: TextStyle(
@@ -41,7 +32,7 @@ class DashboardAluno extends StatelessWidget {
                               children: [
                                 TextSpan(
                                     text: 'Olá, ',
-                                    style: TextStyle(color: Colors.white)),
+                                    style: TextStyle(color: Theme.of(context).accentColor)),
                                 TextSpan(
                                   text: aluno.nome,
                                 ),
@@ -56,7 +47,6 @@ class DashboardAluno extends StatelessWidget {
                           height: 300,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
-                            color: Theme.of(context).primaryColor,
                           ),
                           child: RetornaNota(aluno),
                         ),
@@ -135,7 +125,7 @@ class RetornaNota extends StatelessWidget {
                 existeMed == false
                     ? ''
                     : median.toStringAsPrecision(2),
-                style: TextStyle(fontSize: 24, color: Colors.white),
+                style: TextStyle(fontSize: 32, color: Colors.black),
               ),
             ),
           ),
@@ -151,7 +141,7 @@ class RetornaNota extends StatelessWidget {
       return Text(
         'Suas notas ainda não foram lançadas pelos professores.',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 24, color: Colors.black),
       );
     } else if (aluno.nota1 == -1) {
       existeMed = false;
@@ -160,7 +150,7 @@ class RetornaNota extends StatelessWidget {
             aluno.nota2.toString() +
             ' e sua nota 1 ainda não foi lançada.',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 24, color: Colors.black),
       );
     } else if (aluno.nota2 == -1) {
       existeMed = false;
@@ -169,7 +159,7 @@ class RetornaNota extends StatelessWidget {
             aluno.nota1.toString() +
             ' e sua nota 2 ainda não foi lançada.',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 24, color: Colors.black),
       );
     } else {
       existeMed = true;
@@ -180,7 +170,7 @@ class RetornaNota extends StatelessWidget {
             aluno.nota2.toString() +
             '.',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 24, color: Colors.white),
+        style: TextStyle(fontSize: 24, color: Colors.black),
       );
     }
   }

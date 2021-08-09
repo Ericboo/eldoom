@@ -1,9 +1,9 @@
 import 'package:eldoom/models/user.dart';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
+import 'package:eldoom/widgets/input/nota.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eldoom/web_api/firebase_connection.dart';
-import 'package:flutter/services.dart';
 
 class DashboardProfessor extends StatefulWidget {
 
@@ -34,26 +34,79 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
-          FirebaseAuth.instance.signOut();
-          Navigator.pop(context);
-        },),
-        title: Text('Sua turma'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme.of(context).backgroundColor,
+        elevation: 0,
+        title: Center(child: Text("Sua turma", style: TextStyle(fontFamily: 'Cream', color: Colors.black),)),
       ),
       body: Column(children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                Navigator.pop(context);
+              },
+              child: Container(
+                height: 35,
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  //color: Colors.redAccent,
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.arrow_back, color: Colors.black,),
+                    Text('Sair', style: TextStyle(color: Colors.black, fontSize: 24),),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(child: InkWell(
+              onTap: () async {
+                final Future future = Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => AlunoForm()));
+                await future.then((novoAluno) {
+                  if (novoAluno == null) {
+                    return;
+                  }
+                  saveUser(novoAluno);
+                  alunos.add(novoAluno);
+                });
+                setState(() {});
+              },
+              child: Container(
+                height: 35,
+                width: 90,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  //color: Colors.greenAccent,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text('Adicionar aluno', style: TextStyle(color: Colors.black, fontSize: 20),),
+                    Icon(Icons.arrow_forward, color: Colors.black,),
+                  ],
+                ),
+              ),
+            ),)
+          ],
+        ),
         Expanded(
           child: FutureBuilder(
             future: getUser(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,));
 
                 case ConnectionState.done:
                   alunos = snapshot.data as List<dynamic>;
                   return RefreshIndicator(
                     onRefresh: () {
-                      return Future.delayed(Duration(milliseconds: 400), () {
+                      return Future.delayed(Duration(milliseconds: 200), () {
                         setState(() {
                           updateAlunos();
                         });
@@ -66,7 +119,12 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                           return Container();
                         }
                         return Dismissible(
-                          background: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),),
+                          background: Row(
+                            children: [
+                              Expanded(child: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),)),
+                              Container(alignment: AlignmentDirectional.centerEnd,color: Colors.red, child: Icon(Icons.delete_forever),),
+                            ],
+                          ),
                           key: Key(index.toString()),
                           onDismissed: (direction) async {
                             await showDialog(
@@ -75,11 +133,7 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                               builder: (context) => AlertDialog(
                                 //backgroundColor: Theme.of(context).primaryColor,
                                 title: Text('Excluir aluno?'),
-                                content: Row(children: [
-                                  Text('Deseja excluir '),
-                                  Text(alunos[index].nome),
-                                  Text('?'),
-                                ],),
+                                content: Text('Deseja excluir ' + alunos[index].nome + "?"),
                                 actions: [
                                   Row(
                                     children: [
@@ -96,17 +150,16 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                             });
                           },
                           child: Card(
-                            color: Theme.of(context).primaryColor,
-                            margin: EdgeInsets.all(8),
                             child: Container(
-                              height: 40,
+                              height: 60,
                               child: Row(
                                 children: [
-                                  SizedBox(width: 15,),
+                                  Icon(Icons.view_headline, color: Colors.grey,),
+                                  SizedBox(width: 8,),
                                   Expanded(
                                       child: Text(
                                     alunos[index].nome,
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20,),
                                   )),
                                   NotaForm(true, alunos[index]),
                                   SizedBox(
@@ -134,81 +187,6 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
           ),
         ),
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final Future future = Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AlunoForm()));
-          await future.then((novoAluno) {
-            if (novoAluno == null) {
-              return;
-            }
-            saveUser(novoAluno);
-            alunos.add(novoAluno);
-          });
-          setState(() {});
-        },
-        backgroundColor: Colors.blue,
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class NotaForm extends StatelessWidget {
-  final bool isNota1;
-  final TextEditingController _controller = TextEditingController();
-  final Usuario aluno;
-
-  NotaForm(this.isNota1, this.aluno);
-
-  void setNota(String value) {
-    double? nota = double.tryParse(_controller.text);
-    if (nota == null) {
-      nota = -1.0;
-    }
-    if (isNota1) {
-      aluno.nota1 = nota;
-      updateUser(aluno);
-    } else {
-      aluno.nota2 = nota;
-      updateUser(aluno);
-    }
-    return;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (this.aluno.nota1 != -1 && isNota1) {
-      _controller.text = this.aluno.nota1.toString();
-    } else if (!isNota1) {
-      if (this.aluno.nota2 != -1) {
-        _controller.text = this.aluno.nota2.toString();
-      }
-    }
-    return Container(
-      height: 30,
-      width: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: Colors.white,
-      ),
-      child: Center(
-        child: TextFormField(
-          textAlign: TextAlign.center,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^(\d+)?\.?\d{0,1}')),
-          ],
-          onChanged: (value) {
-            var temp = double.tryParse(_controller.text);
-            if (temp != null && temp > 10) {
-              _controller.text = '10.0';
-            }
-            setNota(value);
-          },
-          controller: _controller,
-          keyboardType: TextInputType.number,
-        ),
-      ),
     );
   }
 }
@@ -244,21 +222,3 @@ class ExcludeButton extends StatelessWidget {
     );
   }
 }
-
-
-
-/*Padding(
-  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-  child: InkWell(
-      child: Icon(
-        Icons.close,
-        color: Colors.red[400],
-      ),
-      onTap: () {
-        setState(() {
-          deleteUser(alunos[index]);
-          alunos.removeAt(index);
-        });
-      }),
-),
- */

@@ -6,7 +6,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final Color? primaryColor = Colors.lightBlue[500];
+
+  final Color? primaryColor = Colors.black;
+  final Color? backgroundColor = Colors.grey[200];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -15,8 +18,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryColor,
-        scaffoldBackgroundColor: Colors.grey[900],
+        accentColor: Colors.grey,
+        backgroundColor: backgroundColor,
+        scaffoldBackgroundColor: backgroundColor,
         inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: primaryColor,
+          ),
           hintStyle: TextStyle(
             color: primaryColor,
           ),
