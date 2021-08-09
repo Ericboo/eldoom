@@ -23,6 +23,8 @@ class _LoginInputState extends State<LoginInput> {
           borderRadius: BorderRadius.circular(12),
         ),
         child: TextField(
+          textCapitalization: TextCapitalization.none,
+          autocorrect: false,
           controller: widget._controller,
           keyboardType: widget.isObscure
               ? TextInputType.text
