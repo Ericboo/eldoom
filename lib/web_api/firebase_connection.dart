@@ -9,7 +9,7 @@ Future<List<dynamic>> getUser() async {
   await Firebase.initializeApp();
   CollectionReference fireUser = databaseReference.collection('users');
   var user = [];
-  await fireUser.get().then((value) => {
+  await fireUser.orderBy('nome').get().then((value) => {
     for (var i = 0; i < value.docs.length; i++) {
       user.add(novoUser(value.docs[i].data())),
     }

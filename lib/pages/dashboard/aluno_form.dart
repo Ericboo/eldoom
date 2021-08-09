@@ -1,4 +1,5 @@
 import 'package:eldoom/models/user.dart';
+import 'package:eldoom/widgets/input/aluno_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,24 @@ class AlunoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Matricular aluno'),
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Container(
+            height: 35,
+            width: 90,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              //color: Colors.redAccent,
+            ),
+            child: Icon(Icons.arrow_back, color: Colors.black,),
+          ),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        title: Text('Matricular aluno', style: TextStyle(color: Colors.black),),
       ),
       body: Column(
         children: [
@@ -48,7 +66,9 @@ class AlunoForm extends StatelessWidget {
                       email: _emailControl.text,
                       password: _senhaControl.text,
                   );
-                  credential = newUser.user!.uid;
+                  if(newUser.user != null) {
+                    credential = newUser.user!.uid;
+                  }
                 } on FirebaseException catch (e) {
                   if (e.code == "email-already-in-use") {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -109,43 +129,4 @@ class AlunoForm extends StatelessWidget {
   }
 }
 
-class InfoInput extends StatelessWidget {
 
-  final TextEditingController _controller;
-  final String label;
-  final IconData icon;
-  final bool isObscure;
-
-  InfoInput(this._controller, this.label, this.icon, this.isObscure);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(15),
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: TextFormField(
-          controller: _controller,
-          autocorrect: false,
-          textCapitalization:
-            label.startsWith('Nome') ? TextCapitalization.words : TextCapitalization.none,
-          keyboardType:
-            isObscure ? TextInputType.text : TextInputType.emailAddress,
-          obscureText: isObscure,
-          style: TextStyle(color: Colors.white, fontSize: 20),
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            icon: Icon(
-              icon,
-              color: Theme.of(context).primaryColor,
-            ),
-            hintText: label,
-          ),
-        ),
-      ),
-    );
-  }
-}
