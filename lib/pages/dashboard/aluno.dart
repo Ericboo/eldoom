@@ -16,66 +16,75 @@ class DashboardAluno extends StatelessWidget {
               constraints: BoxConstraints(
                   minHeight: viewportConstraints.maxHeight
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 40,),
-                        RichText(
-                          text: TextSpan(
-                              style: TextStyle(
-                                  fontSize: 32, color: Theme.of(context).primaryColor),
-                              children: [
-                                TextSpan(
-                                    text: 'Olá, ',
-                                    style: TextStyle(color: Theme.of(context).accentColor)),
-                                TextSpan(
-                                  text: aluno.nome,
+              child: Center(
+                child: Container(
+                  width: 500,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 40,),
+                            Center(
+                              child: RichText(
+                                text: TextSpan(
+                                    style: TextStyle(
+                                        fontSize: 32, color: Theme.of(context).primaryColor),
+                                    children: [
+                                      TextSpan(
+                                          text: 'Olá, ',
+                                          style: TextStyle(color: Theme.of(context).accentColor)),
+                                      TextSpan(
+                                        text: aluno.nome,
+                                      ),
+                                      TextSpan(text: "!")
+                                    ]),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 12,
+                            ),
+                            Center(
+                              child: Container(
+                                width: 400,
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                TextSpan(text: "!")
-                              ]),
+                                child: RetornaNota(aluno),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 12,
-                        ),
-                        Container(
-                          width: 400,
-                          height: 300,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: RetornaNota(aluno),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: InkWell(
-                      onTap: () {
-                        FirebaseAuth.instance.signOut();
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.red[300],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        width: 400,
-                        height: 50,
-                        child: Center(
-                            child: Text(
-                              'Sair',
-                              style: TextStyle(color: Colors.white),
-                            )),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.red[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            width: 400,
+                            height: 50,
+                            child: Center(
+                                child: Text(
+                                  'Sair',
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           );
