@@ -15,6 +15,11 @@ sistema deve calcular a média aritmética para determinar a nota final do aluno
 também poderá fazer login e verificar a sua média.
 
 
+# WEBSITE RELESED:
+
+You can check out our website in https://ericboo.github.io/
+
+
 # VERSION 1.0 RELEASED: 
 
 I hereby declare the official version 1.0 is now released.
@@ -42,3 +47,4 @@ including the github page, project's name and description. Unless an
 actual trademark is required, there's no reason to actively kill "eldoom"._
 
 * No more floating action button. It's better this way.
+
