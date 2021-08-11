@@ -65,9 +65,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     //listUsers();
-    return SingleChildScrollView(
-      child: Scaffold(
-        body: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
