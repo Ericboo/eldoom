@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:eldoom/models/user.dart';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
 import 'package:eldoom/widgets/input/nota.dart';
@@ -127,19 +129,13 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                         }
                         return Center(
                           child: Dismissible(
-                            background: Row(
-                              children: [
-                                Expanded(child: Container(alignment: AlignmentDirectional.centerStart,color: Colors.red, child: Icon(Icons.delete_forever),)),
-                                Container(alignment: AlignmentDirectional.centerEnd,color: Colors.red, child: Icon(Icons.delete_forever),),
-                              ],
-                            ),
+                            background: Container(alignment: AlignmentDirectional.center, child: Icon(Icons.delete_forever),),
                             key: Key(index.toString()),
                             onDismissed: (direction) async {
                               await showDialog(
                                 barrierDismissible: false,
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                  //backgroundColor: Theme.of(context).primaryColor,
                                   title: Text('Excluir aluno?'),
                                   content: Text('Deseja excluir ' + alunos[index].nome + "?"),
                                   actions: [
@@ -177,7 +173,9 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                                     NotaForm(false, alunos[index]),
                                     SizedBox(
                                       width: 12,
-                                    )
+                                    ),
+                                    ShowMedian(alunos[index]),
+                                    SizedBox(width: 8,),
                                   ],
                                 ),
                               ),
@@ -200,6 +198,46 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
     );
   }
 }
+
+
+class ShowMedian extends StatefulWidget {
+
+  final Usuario aluno;
+
+  ShowMedian(this.aluno);
+
+  @override
+  _ShowMedianState createState() => _ShowMedianState();
+}
+
+class _ShowMedianState extends State<ShowMedian> {
+
+  Timer timer = Timer.periodic(Duration(seconds: 1), (timer) { });
+
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.aluno.nota1 != -1 && widget.aluno.nota2 != -1) {
+      var median = (widget.aluno.nota1  + widget.aluno.nota2) / 2;
+      return Text(median.toStringAsPrecision(2));
+    }
+    return Text(" -.- ");
+  }
+}
+
 
 
 class ExcludeButton extends StatelessWidget {
