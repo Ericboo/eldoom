@@ -44,13 +44,12 @@ class _LoginState extends State<Login> {
       print (e);
     }
   }
-
   @override
   void initState() {
-    super.initState();
     firebaseAuth = widget.getFirebaseInstance();
     rememberUser();
     listUsers();
+    super.initState();
   }
 
   List<dynamic> users = [];
@@ -117,6 +116,7 @@ class _LoginState extends State<Login> {
                     onTap: () async {
                       listUsers();
                       if (_userControl.text.isEmpty || _passControl.text.isEmpty) {
+                        _passControl.text = "";
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text(
                           'Preencha os campos.',
@@ -130,6 +130,7 @@ class _LoginState extends State<Login> {
                             email: _userControl.text,
                             password: _passControl.text
                         );
+                        _passControl.text = "";
                       } on FirebaseAuthException {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                             content: Text(
