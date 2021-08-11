@@ -1,4 +1,5 @@
 import 'package:eldoom/models/user.dart';
+import 'dart:async';
 import 'package:eldoom/pages/dashboard/aluno_form.dart';
 import 'package:eldoom/widgets/input/nota.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -163,12 +164,16 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
                                   )),
                                   NotaForm(true, alunos[index]),
                                   SizedBox(
-                                    width: 16,
+                                    width: 12,
                                   ),
                                   NotaForm(false, alunos[index]),
                                   SizedBox(
+                                    width: 8,
+                                  ),
+                                  ShowMedian(alunos[index]),
+                                  SizedBox(
                                     width: 12,
-                                  )
+                                  ),
                                 ],
                               ),
                             ),
@@ -190,6 +195,44 @@ class _DashboardProfessorState extends State<DashboardProfessor> {
     );
   }
 }
+
+class ShowMedian extends StatefulWidget {
+  final Usuario aluno;
+
+  ShowMedian(this.aluno);
+
+  @override
+  _ShowMedianState createState() => _ShowMedianState();
+}
+
+class _ShowMedianState extends State<ShowMedian> {
+
+  Timer timer = Timer.periodic(Duration(seconds: 1), (timer) { });
+
+  @override
+  void initState() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      setState(() {});
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.aluno.nota1 != -1 && widget.aluno.nota2 != -1) {
+      var median = (widget.aluno.nota1  + widget.aluno.nota2) / 2;
+      return Text(median.toStringAsPrecision(2));
+    }
+    return Text(" -.- ");
+  }
+}
+
 
 
 class ExcludeButton extends StatelessWidget {

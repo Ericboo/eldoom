@@ -1,4 +1,5 @@
 import 'package:eldoom/models/user.dart';
+import 'package:eldoom/pages/dashboard/professor.dart';
 import 'package:eldoom/web_api/firebase_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
