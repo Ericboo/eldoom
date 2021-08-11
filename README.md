@@ -15,7 +15,7 @@ sistema deve calcular a média aritmética para determinar a nota final do aluno
 também poderá fazer login e verificar a sua média.
 
 
-# WEBSITE RELESED:
+# WEBSITE RELEASED:
 
 You can check out our website in https://ericboo.github.io/
 
