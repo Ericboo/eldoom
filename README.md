@@ -19,6 +19,10 @@ também poderá fazer login e verificar a sua média.
 
 You can check out our website in https://ericboo.github.io/
 
+#YOUTUBE VIDEO RELEASED
+
+You'll find it here https://www.youtube.com/watch?v=ZeNwSIEWNxE
+
 
 # VERSION 1.0 RELEASED: 
 
