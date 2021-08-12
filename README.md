@@ -19,7 +19,7 @@ também poderá fazer login e verificar a sua média.
 
 You can check out our website in https://ericboo.github.io/
 
-#YOUTUBE VIDEO RELEASED
+# YOUTUBE VIDEO RELEASED
 
 You'll find it here https://www.youtube.com/watch?v=ZeNwSIEWNxE
 
